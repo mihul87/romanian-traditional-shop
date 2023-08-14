@@ -32,11 +32,10 @@
 </script>
 
 <template>
-  <footer class="bg-orient-default">
+  <footer class="bg-orient-default text-white">
     <div class="px-3 py-6 mx-auto sm:px-6 lg:py-8 lg:px-6">
       <div class="pb-8 xl:grid xl:grid-cols-5 xl:gap-8">
         <div class="space-y-8 xl:col-span-1">
-          
           <!-- <img class="h-10" src="https://tailwindui.com/img/logos/workflow-mark-gray-300.svg" alt="Company name" /> -->
           <h1 class="text-xl font-bold tracking-wide text-white">Port Popular Românesc</h1>
           <p class="text-xl text-white">
@@ -44,35 +43,27 @@
           </p>
           <div class="flex space-x-6">
             <NuxtLink v-for="item in socialLinks" :key="item.name" :to="item.href" class="text-white">
-              <!-- <Heroicons :name="item.icon" /> -->
+              <Heroicons :name="item.icon" />
             </NuxtLink>
           </div>
         </div>
         <div class="grid grid-cols-2 gap-8 mt-12 xl:mt-0 xl:col-span-4">
           <div class="md:grid md:grid-cols-2 md:gap-8">
             <div>
-              <h3
-                class="text-sm font-semibold tracking-wider text-white uppercase"
-              >
-                Customer services
-              </h3>
-              <ul role="list" class="mt-4 space-y-4">
+              <h3 class="header-class">Customer services</h3>
+              <ul role="list" class="mt-4 space-y-2">
                 <li v-for="item in services" :key="item.name">
-                  <NuxtLink to="item.href" class="text-white">
+                  <NuxtLink to="item.href">
                     {{ item.name }}
                   </NuxtLink>
                 </li>
               </ul>
             </div>
             <div class="mt-12 md:mt-0">
-              <h3
-                class="text-sm font-semibold tracking-wider text-white uppercase"
-              >
-                Information
-              </h3>
-              <ul role="list" class="mt-4 space-y-4">
+              <h3 class="header-class"> Information </h3>
+              <ul role="list" class="mt-4 space-y-2">
                 <li v-for="item in information" :key="item.name">
-                  <NuxtLink to="item.href" class="text-white">
+                  <NuxtLink to="item.href">
                     {{ item.name }}
                   </NuxtLink>
                 </li>
@@ -81,14 +72,10 @@
           </div>
           <div class="md:grid md:grid-cols-2 md:gap-8">
             <div>
-              <h3
-                class="text-sm font-semibold tracking-wider text-white uppercase"
-              >
-                About us
-              </h3>
-              <ul role="list" class="mt-4 space-y-4">
+              <h3 class="header-class"> About us</h3>
+              <ul role="list" class="mt-4 space-y-2">
                 <li v-for="item in about" :key="item.name">
-                  <NuxtLink to="item.href" class="text-white">
+                  <NuxtLink to="item.href">
                     {{ item.name }}
                   </NuxtLink>
                 </li>
@@ -105,10 +92,8 @@
           </div>
         </div>
         <div class="mt-12 xl:mt-0">
-          <h3 class="text-sm font-semibold tracking-wider text-white uppercase">
-            Contact details
-          </h3>
-          <ul role="list" class="mt-4 space-y-4">
+          <h3 class="header-class"> Contact details </h3>
+          <ul role="list" class="mt-4 space-y-2">
                 <li v-for="item in contact" :key="item.name" class="text-white">
                     {{ item.name }}
                 </li>
@@ -150,7 +135,7 @@
       </div>
       <div class="pt-8 mt-12 border-t border-gray-700">
         <p class="text-base text-center text-white">
-          &copy; 2023 Mihail Botnari. All rights reserved.
+          All rights reserved. &copy; 2023 Mihail Botnari. 
         </p>
       </div>
     </div>
@@ -159,5 +144,7 @@
 
 
 <style scoped>
-
+.header-class { 
+  @apply text-sm font-semibold tracking-wider uppercase 
+  }
 </style>
