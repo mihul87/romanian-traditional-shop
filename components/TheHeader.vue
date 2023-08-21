@@ -4,6 +4,7 @@
 
 // const userStore = useUserStore();
 // const {user, isAuthenticated} = storeToRefs(userStore);
+const user = null;
 
 // import { mapGetters } from "vuex";
     const search = ref("")
@@ -137,8 +138,8 @@ const signOut = async () => {
               <button @click="signOut" class="btn-log-active">Sign Out</button>
             </div>
             <div v-else class="lg:flex">
-              <nuxt-link to="/account/signin" class="mr-2 btn-log">Sign in</nuxt-link>
-              <nuxt-link to="/account/signup" class="btn-log-active">Sign up</nuxt-link>
+              <nuxt-link to="/login" class="mr-2 btn-log">Sign in</nuxt-link>
+              <nuxt-link to="/register" class="btn-log-active">Sign up</nuxt-link>
             </div>
           </div>
         </div>

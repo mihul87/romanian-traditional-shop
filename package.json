@@ -10,9 +10,15 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/supabase": "^1.0.2",
     "@nuxtjs/tailwindcss": "^6.8.0",
     "@pinia/nuxt": "^0.4.11",
     "@types/node": "^18.17.0",
     "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "@vee-validate/rules": "^4.11.1",
+    "vee-validate": "^4.11.1",
+    "yup": "^0.29.3"
   }
 }

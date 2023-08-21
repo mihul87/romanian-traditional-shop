@@ -43,7 +43,7 @@
           </p>
           <div class="flex space-x-6">
             <NuxtLink v-for="item in socialLinks" :key="item.name" :to="item.href" class="text-white">
-              <Heroicons :name="item.icon" />
+              <UIHeroicons :name="item.icon" />
             </NuxtLink>
           </div>
         </div>
