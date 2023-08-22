@@ -1,10 +1,11 @@
 <script setup>
-// import { storeToRefs } from "pinia";
-// import { useUserStore } from "~/stores/users";
+const supabase = useSupabaseClient()
+import { storeToRefs } from "pinia";
+import { useUserStore } from "~/stores/users";
 
-// const userStore = useUserStore();
-// const {user, isAuthenticated} = storeToRefs(userStore);
-const user = null;
+const userStore = useUserStore();
+const { isAuthenticated } = storeToRefs(userStore);
+const {user, setUser, userSignOut} = userStore;
 
 // import { mapGetters } from "vuex";
     const search = ref("")
@@ -34,7 +35,9 @@ const user = null;
 
     
 const signOut = async () => {
-  await userStore.signout();
+  let { error } = await supabase.auth.signOut();
+  await userSignOut();
+  navigateTo('/');
 }
 //   computed: {
 //     ...mapGetters("users", ["user", "isAuthenticated"]),
@@ -52,6 +55,23 @@ const signOut = async () => {
 //     },
 //   },
 
+const router = useRouter();
+const state = reactive({
+  loading: false
+})
+
+onMounted(() => {
+  supabase.auth.onAuthStateChange((_, session) => {
+    state.loading = true
+    if (!session) {
+      navigateTo("/");
+    } else {
+      setUser(session ? session.user : null)
+      router.forward()
+    }
+    state.loading = false
+  })
+})
 </script>
 
 <template>
@@ -105,7 +125,8 @@ const signOut = async () => {
 
           <!-- Log buttons -->
           <div class="hidden lg:pt-1 lg:flex">
-            <div v-if="user" class="flex items-center px-4">
+            <UILoading v-if="state.loading" />
+            <div v-if="isAuthenticated" class="flex items-center px-4">
               <div class="flex-shrink-0 mr-3">
                 <img
                   class="w-12 h-12 rounded-full border-2 border-white"
@@ -122,13 +143,13 @@ const signOut = async () => {
                 </NuxtLink>
               </div>
               <div v-else class="flex">
-                <NuxtLink to="/account/favorite">
+                <NuxtLink to="/profile/favorite">
                   <UIHeroicons
                     name="favorite"
                     class="pr-1 text-white cursor-pointer mr-3"
                   />
                 </NuxtLink>
-                <NuxtLink to="/account/cart">
+                <NuxtLink to="/profile/cart">
                   <UIHeroicons
                     name="cart"
                     class="pr-1 text-white cursor-pointer mr-3"

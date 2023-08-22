@@ -1,42 +1,20 @@
 <script setup>
   import { object, string, ref as yupRef } from "yup";
   import { configure } from "vee-validate";
-  import { storeToRefs } from "pinia";
-//   import { useUserStore } from "~/stores/users";
-
-// const userStore = useUserStore();
-const supabase = useSupabaseClient();
   
-// firebase
-//     const handleSubmit = async(values, actions) => {
-//     const credentials = await userStore.signin(values);
-//     console.log("User signin:", credentials.value);
-//     if (credentials.value) {navigateTo("/");}
-//     // actions.resetForm();
-//   };
-
-  const login = async(values, actions) => {
-  const { data, error } = await supabase.auth.signUp(values);
-  console.log("user data from supabase: ", data);
-  if (data) {navigateTo("/");}
-  actions.resetForm();
+const supabase = useSupabaseClient();
+let isError=ref(false);
+let errMsg=ref('');
+  
+const login = async(values, actions) => {
+  const { error } = await supabase.auth.signInWithPassword(values);
+  if (error) { 
+    isError = true;
+    errMsg = error.message;
+  } else  { 
+    actions.resetForm()
+    navigateTo("/"); }
 }
-// const login = () => {
-//     this.$store
-//       .dispatch("users/login", { email: this.email, password: this.password })
-//       .then(() => {
-//         this.email = "";
-//         this.password = "";
-//         this.$router.push("/");
-//       })
-//       .catch((error) => {
-//         this.isError = true;
-//         this.errMsg = error.code;
-//         setTimeout(() => {
-//           this.isError = false;
-//         }, 5000);
-//       });
-//   }
 
 const schema = object({
   email: string().required().email().label("Email Address"),
@@ -73,7 +51,7 @@ const schema = object({
 
               <div class="ml-2 text-sm">
                 <nuxt-link
-                  to="/account/forgotpassword"
+                  to="/profile/recovery"
                   class="font-medium text-orient-default"
                 >
                   Forgot your password?
@@ -88,7 +66,7 @@ const schema = object({
                 Sign in
               </button>
             </div>
-            <!-- <div class="text-xs leading-3 text-red-500" v-if="isError">{{ errMsg }}</div> -->
+            <div class="text-xs leading-3 text-red-500" v-if="isError">{{ errMsg }}</div>
         </VForm>
         <div class="space-y-2 text-sm font-medium text-center text-blue-600">
           <p class="text-orient-default">or</p>

@@ -1,34 +1,22 @@
 <script setup>
 import { object, string, ref as yupRef } from "yup";
 import { configure } from "vee-validate";
-import { storeToRefs } from "pinia";
-import { useUserStore } from '~/stores/users';
 
-const userStore = useUserStore();
 const supabase = useSupabaseClient()
+let isError=ref(false);
+let errMsg=ref('');
 
-
-// firebase
-
-// const register = async(values, actions) => {
-//   const credentials = await userStore.signup(values);
-//   if (credentials.value) {navigateTo("/");}
-//    actions.resetForm();
-// };
-
-//supabase
-
-const register = async() => {
-  const { data, error }= await supabase.auth.signUp({
-    email: email,
-    password: password
+const register = async(values, actions) => {
+  const { error }= await supabase.auth.signUp({
+    email: values.email,
+    password: values.password
   });
-
-  conosole.log("user data: ", email, password);
-//   if (credentials.value) {navigateTo("/");}
-//    actions.resetForm();
+  if (error) { 
+    isError = true;
+    errMsg = error.message;
+   }
 };
-
+ 
 configure({
   validateOnBlur: true, // controls if `blur` events should trigger validation with `handleChange` handler
   validateOnChange: true, // controls if `change` events should trigger validation with `handleChange` handler
@@ -93,6 +81,7 @@ const initialValues = { fname: "", lname: "", email: "", password: "", confirmed
               Sign up
             </button>
           </div>
+          <div class="text-xs leading-3 text-red-500" v-if="isError">{{ errMsg }}</div>
         </VForm>
         <div class="space-y-2 text-sm font-medium text-center text-blue-600">
           <p class="text-orient-default">or</p>
