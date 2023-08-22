@@ -51,7 +51,7 @@ const schema = object({
 
               <div class="ml-2 text-sm">
                 <nuxt-link
-                  to="/profile/recovery"
+                  to="/recover"
                   class="font-medium text-orient-default"
                 >
                   Forgot your password?
