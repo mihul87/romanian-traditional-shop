@@ -137,10 +137,11 @@ const schema = object({
       </div>
     </div>
     <div class="relative justify-end flex-1 hidden w-0 lg:block">
-      <img
+      <nuxt-img
         class="absolute inset-0 object-cover w-full h-full"
-        src="~assets/img/angel.jpg"
-        alt=""
+        src="angel.jpg"
+        alt="angel"
+        format="webp"
       />
     </div>
   </div>

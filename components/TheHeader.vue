@@ -1,8 +1,8 @@
 <script setup>
-const supabase = useSupabaseClient()
 import { storeToRefs } from "pinia";
 import { useUserStore } from "~/stores/users";
 
+const supabase = useSupabaseClient()
 const userStore = useUserStore();
 const { isAuthenticated } = storeToRefs(userStore);
 const {user, setUser, userSignOut} = userStore;
@@ -33,27 +33,14 @@ const {user, setUser, userSignOut} = userStore;
         },
       ]
 
-    
+const userName = computed(() => user?.value.user_metadata.full_name);
+const userAvatar = computed(() => user?.value.user_metadata.avatar_url);
+      
 const signOut = async () => {
   let { error } = await supabase.auth.signOut();
   await userSignOut();
   navigateTo('/');
 }
-//   computed: {
-//     ...mapGetters("users", ["user", "isAuthenticated"]),
-//   },
-//   methods: {
-//     signOut() {
-//       this.$store
-//         .dispatch("users/signOut")
-//         .then(() => {
-//           this.$router.push("/");
-//         })
-//         .catch((err) => {
-//           alert(err.message);
-//         });
-//     },
-//   },
 
 const router = useRouter();
 const state = reactive({
@@ -125,38 +112,39 @@ onMounted(() => {
 
           <!-- Log buttons -->
           <div class="hidden lg:pt-1 lg:flex">
-            <UILoading v-if="state.loading" />
             <div v-if="isAuthenticated" class="flex items-center px-4">
               <div class="flex-shrink-0 mr-3">
-                <img
+                <nuxt-img
                   class="w-12 h-12 rounded-full border-2 border-white"
-                  src="~/assets/img/profil.jpg"
+                  src="profil.jpg"
                   alt="profil"
+                  format="webp"
                 />
               </div>
-              <div v-if="user?.userType === 'admin'">
+              <!-- <div v-if="user?.userType === 'admin'">
                 <NuxtLink to="/admin/createproduct">
                   Create Product
                 </NuxtLink>
                 <NuxtLink to="/admin/products">
                   Products
                 </NuxtLink>
-              </div>
-              <div v-else class="flex">
-                <NuxtLink to="/profile/favorite">
+              </div> -->
+                <nuxt-link to="/profile/favorite">
                   <UIHeroicons
                     name="favorite"
                     class="pr-1 text-white cursor-pointer mr-3"
                   />
-                </NuxtLink>
-                <NuxtLink to="/profile/cart">
+                </nuxt-link>
+                <nuxt-link to="/profile/cart">
                   <UIHeroicons
                     name="cart"
                     class="pr-1 text-white cursor-pointer mr-3"
                   />
-                </NuxtLink>
-              </div>
+                </nuxt-link>
               <button @click="signOut" class="btn-log-active">Sign Out</button>
+              <!-- <div>
+               {{ userName }} 
+              </div> -->
             </div>
             <div v-else class="lg:flex">
               <nuxt-link to="/login" class="mr-2 btn-log">Sign in</nuxt-link>
@@ -228,7 +216,7 @@ onMounted(() => {
     <!-- <NavigationNavPeopleMobile :isOpen="isMobileMenuOpen" /> -->
 
     <!-- NavigationPeople after -->
-    <!-- <NavigationNavPeople class="hidden lg:block" /> -->
+    <MainNav class="hidden lg:block" />
   </header>
 </template>
 
