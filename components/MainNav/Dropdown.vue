@@ -24,7 +24,7 @@
               :key="item.title"
               class="relative z-20 px-4 my-6 text-white rounded-md group bg-orient-default hover:bg-gray-300 hover:text-orient-default"
             >
-              <NuxtLink to="product">
+              <NuxtLink to="/products">
                 <div class="lg:mx-auto lg:grid lg:grid-cols-2 lg:gap-6">
                   <div class="lg:-my-4">
                     <nuxt-img class="object-cover lg:h-full lg:w-full "
