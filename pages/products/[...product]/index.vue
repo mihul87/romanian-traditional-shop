@@ -2,50 +2,75 @@
 <script setup>
   const supabase = useSupabaseClient();
 
-  const { data, error } = await supabase.from('products').select('*').eq('id', '1');
+  const { data, error } = await supabase
+    .from('products')
+    .select('*')
+    .eq('id', 'acdd259c-9033-4e6f-965b-c58129fa5f44')
+  
   const product0 = data[0];
+  
+  const { data: img, error: err_img } = await supabase
+    .from('images')
+    .select('*')
+    .eq('product_id', 'acdd259c-9033-4e6f-965b-c58129fa5f44')
+
+  
+let { data: variation, error: err_variation } = await supabase
+  .from('product_entry')
+  .select('*')
+  .eq('product_id', 'acdd259c-9033-4e6f-965b-c58129fa5f44')
+
+let sizes = [];
+let colors = [];
+if (variation) {
+  variation.forEach((item) => {
+    if (!sizes.includes(item.size))  { sizes.push(item.size)} 
+    if (!colors.includes(item.color))  { colors.push(item.color)}
+  }) 
+}
    
+
 const product = reactive({
-        name: "Costum Muscel",
-        price: "$600",
-        rating: 4.9,
-        reviews: 52,
+        // name: "Costum Muscel",
+        // price: "$600",
+        // rating: 4.9,
+        // reviews: 52,
         to: "#",
         breadcrumbs: [
           { id: 1, name: "Women", to: "#" },
           { id: 2, name: "Shirts", to: "#" },
         ],
-        images: [
-          {
-            id: 1,
-            imageSrc: "costum_muscel.jpg",
-            imageAlt: "Costum popular - Muscel, Argeș",
-            primary: true,
-          },
-          {
-            id: 2,
-            imageSrc: "costum_muscel.jpg",
-            imageAlt: "Costum popular - Muscel, Argeș",
-            primary: false,
-          },
-          {
-            id: 3,
-            imageSrc: "costum_muscel.jpg",
-            imageAlt: "Costum popular - Muscel, Argeș",
-            primary: false,
-          },
-        ],
+        // images: [
+        //   {
+        //     id: 1,
+        //     src: "costum_muscel.jpg",
+        //     alt: "Costum popular - Muscel, Argeș",
+        //     primary: true,
+        //   },
+        //   {
+        //     id: 2,
+        //     src: "costum_muscel.jpg",
+        //     alt: "Costum popular - Muscel, Argeș",
+        //     primary: false,
+        //   },
+        //   {
+        //     id: 3,
+        //     src: "costum_muscel.jpg",
+        //     alt: "Costum popular - Muscel, Argeș",
+        //     primary: false,
+        //   },
+        // ],
         colors: [
-          {
-            name: "Black",
-            bgColor: "bg-gray-900",
-            selectedColor: "ring-gray-900",
-          },
-          {
-            name: "Heather Grey",
-            bgColor: "bg-gray-400",
-            selectedColor: "ring-gray-400",
-          },
+          // {
+          //   name: "Black",
+          //   bgColor: "bg-gray-900",
+          //   selectedColor: "ring-gray-900",
+          // },
+          // {
+          //   name: "Heather Grey",
+          //   bgColor: "bg-gray-200",
+          //   selectedColor: "ring-gray-400",
+          // },
           {
             name: "Red",
             bgColor: "bg-red-color",
@@ -56,11 +81,11 @@ const product = reactive({
             bgColor: "bg-blue-color",
             selectedColor: "bg-blue-color",
           },
-          {
-            name: "brown",
-            bgColor: "bg-brown-color",
-            selectedColor: "bg-brown-color",
-          },
+          // {
+          //   name: "brown",
+          //   bgColor: "bg-brown-color",
+          //   selectedColor: "bg-brown-color",
+          // },
           {
             name: "Green",
             bgColor: "bg-green-color",
@@ -68,23 +93,24 @@ const product = reactive({
           },
         ],
         sizes: [
-          { name: "XS", inStock: true },
+          // { name: "XS", inStock: true },
           { name: "S", inStock: true },
           { name: "M", inStock: true },
           { name: "L", inStock: true },
-          { name: "XL", inStock: false },
-          { name: "XXL", inStock: true },
+          // { name: "XL", inStock: false },
+          // { name: "XXL", inStock: true },
         ],
-        description: `
-    <p>Iile erau mândria oricărei fete de la ţară. Nu exista casă de om în care să nu se găsească măcar o astfel de nestemată.</p>
-    <p>Am aflat povestea iilor din satul oltenesc de odinioară de la profesorul Ştefan Bălănescu , cel care într-o viaţă de om a adunat împrejurul său tot ceea ce înseamnă artă populară autentic românească. A avut privilegiul să vadă cum se lucrau iile în satul copilăriei, Catane, şi nu numai. „Eu mă muncesc de o viaţă să fac rost de aceste nestemate, că sunt din ce în ce mai rare“, a mărturisit acesta.</p>`,
+        // description: `
+        //   <p>Iile erau mândria oricărei fete de la ţară. Nu exista casă de om în care să nu se găsească măcar o astfel de nestemată.</p>
+        //   <p>„Eu mă muncesc de o viaţă să fac rost de aceste nestemate, că sunt din ce în ce mai rare“, a mărturisit acesta.</p>`,
         details: [
           "Pânză de bumbac topit, ţesut în război",
           "Cusătura manuală",
           "Tivită la guler",
           "Iile erau cusute după modele naturale.",
         ],
-      })
+      });
+
     let shoppingCart = ref([]);
   
   // onMounted(() => {
@@ -255,10 +281,10 @@ const product = reactive({
               <h2 class="sr-only">Images</h2>
               <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
                 <nuxt-img
-                  v-for="image in product.images"
+                  v-for="image in img"
                   :key="image.id"
-                  src="costum_muscel.jpg"
-                  :alt="image.imageAlt"
+                  :src="image.src"
+                  :alt="image.alt"
                   format="webp"
                   :class="[
                     image.primary
@@ -279,8 +305,8 @@ const product = reactive({
                     <legend class="sr-only">Choose a color</legend>
                     <div class="flex items-center space-x-3">
                       <label
-                        v-for="color in product.colors"
-                        :key="color.name"
+                        v-for="color in colors"
+                        :key="color"
                         class="-m-0.5 relative p-0.5 border-b-2 border-black flex items-center justify-center cursor-pointer focus:outline-none ring-gray-900"
                       >
                         <input
@@ -291,11 +317,11 @@ const product = reactive({
                           aria-labelledby="color-choice-0-label"
                         />
                         <p id="color-choice-0-label" class="sr-only">
-                          {{ color.name }}
+                          {{ color }}
                         </p>
                         <span aria-hidden="true"
                           class="h-8 w-8 bg-gray-900 border border-black border-opacity-10 rounded-full"
-                          :class="color.bgColor"
+                          :class="`bg-${color}-color`"
                         ></span>
                       </label>
                     </div>
@@ -314,8 +340,8 @@ const product = reactive({
                     <legend class="sr-only">Choose a size</legend>
                     <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
                       <label
-                        v-for="size in product.sizes"
-                        :key="size.name"
+                        v-for="size in sizes"
+                        :key="size"
                         class="border rounded-md py-3 px-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none"
                         :class="[
                           size.inStock ? 'cursor-pointer' : 'opacity-25 cursor-not-allowed',
@@ -324,11 +350,11 @@ const product = reactive({
                         <input
                           type="radio"
                           name="size-choice"
-                          :value="size.name"
+                          :value="size"
                           class="sr-only"
                           aria-labelledby="size-choice-0-label"
                         />
-                        <p id="size-choice-0-label">{{ size.name }}</p>
+                        <p id="size-choice-0-label">{{ size }}</p>
                       </label>
                     </div>
                   </fieldset>
