@@ -7,7 +7,7 @@ let isError=ref(false);
 let errMsg=ref('');
 
 const register = async(values, actions) => {
-  const { error }= await supabase.auth.signUp({
+  const { error } = await supabase.auth.signUp({
     email: values.email,
     password: values.password
   });

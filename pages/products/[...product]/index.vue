@@ -7,9 +7,9 @@
     .select('*')
     .eq('id', 'acdd259c-9033-4e6f-965b-c58129fa5f44')
   
-  const product0 = data[0];
+  const product = data[0];
   
-  const { data: img, error: err_img } = await supabase
+  const { data: images, error: err_images } = await supabase
     .from('images')
     .select('*')
     .eq('product_id', 'acdd259c-9033-4e6f-965b-c58129fa5f44')
@@ -28,96 +28,33 @@ if (variation) {
     if (!colors.includes(item.color))  { colors.push(item.color)}
   }) 
 }
-   
 
-const product = reactive({
-        // name: "Costum Muscel",
-        // price: "$600",
-        // rating: 4.9,
-        // reviews: 52,
-        to: "#",
-        breadcrumbs: [
+let inStock = (item) => { 
+  // return item?.quantity > 0 
+  // console.log("Quantity: ", item.quantity);
+}
+ 
+// take from route in the future
+const breadcrumbs =  [
           { id: 1, name: "Women", to: "#" },
           { id: 2, name: "Shirts", to: "#" },
-        ],
-        // images: [
-        //   {
-        //     id: 1,
-        //     src: "costum_muscel.jpg",
-        //     alt: "Costum popular - Muscel, Argeș",
-        //     primary: true,
-        //   },
-        //   {
-        //     id: 2,
-        //     src: "costum_muscel.jpg",
-        //     alt: "Costum popular - Muscel, Argeș",
-        //     primary: false,
-        //   },
-        //   {
-        //     id: 3,
-        //     src: "costum_muscel.jpg",
-        //     alt: "Costum popular - Muscel, Argeș",
-        //     primary: false,
-        //   },
-        // ],
-        colors: [
-          // {
-          //   name: "Black",
-          //   bgColor: "bg-gray-900",
-          //   selectedColor: "ring-gray-900",
-          // },
-          // {
-          //   name: "Heather Grey",
-          //   bgColor: "bg-gray-200",
-          //   selectedColor: "ring-gray-400",
-          // },
-          {
-            name: "Red",
-            bgColor: "bg-red-color",
-            selectedColor: "bg-red-color",
-          },
-          {
-            name: "Blue",
-            bgColor: "bg-blue-color",
-            selectedColor: "bg-blue-color",
-          },
-          // {
-          //   name: "brown",
-          //   bgColor: "bg-brown-color",
-          //   selectedColor: "bg-brown-color",
-          // },
-          {
-            name: "Green",
-            bgColor: "bg-green-color",
-            selectedColor: "bg-green-color",
-          },
-        ],
-        sizes: [
-          // { name: "XS", inStock: true },
-          { name: "S", inStock: true },
-          { name: "M", inStock: true },
-          { name: "L", inStock: true },
-          // { name: "XL", inStock: false },
-          // { name: "XXL", inStock: true },
-        ],
-        // description: `
-        //   <p>Iile erau mândria oricărei fete de la ţară. Nu exista casă de om în care să nu se găsească măcar o astfel de nestemată.</p>
-        //   <p>„Eu mă muncesc de o viaţă să fac rost de aceste nestemate, că sunt din ce în ce mai rare“, a mărturisit acesta.</p>`,
-        details: [
-          "Pânză de bumbac topit, ţesut în război",
-          "Cusătura manuală",
-          "Tivită la guler",
-          "Iile erau cusute după modele naturale.",
-        ],
-      });
+        ]
 
-    let shoppingCart = ref([]);
+// solve the array in supabase
+const details = [
+  "Pânză de bumbac topit, ţesut în război",
+  "Cusătura manuală",
+  "Tivită la guler",
+  "Iile erau cusute după modele naturale.",
+]
+
+let shoppingCart = ref([]);
   
-  // onMounted(() => {
-  //   shoppingCart = JSON.parse(
-  //     localStorage.getItem("shoppingCart") || "[]"
-  //   );
-  // })
+// onMounted(() => {
+//   shoppingCart = JSON.parse(
+//     localStorage.getItem("shoppingCart") || "[]"
+//   );
+// })
 
 //   watch: {
 //     shoppingCart: {
@@ -133,6 +70,7 @@ const product = reactive({
   //     return this.person.colors[0].name;
   //   }
   // },
+
   const addToCart = (product) => {
       let exists = false;
       for (const cartItem of shoppingCart) {
@@ -155,10 +93,10 @@ const product = reactive({
     <div class="bg-white">
       <div class="pt-6 pb-16 sm:pb-24">
         <nav aria-label="Breadcrumb"
-             class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         >
           <ol role="list" class="flex items-center space-x-4">
-            <li v-for="breadcrumb in product.breadcrumbs" :key="breadcrumb.id">
+            <li v-for="breadcrumb in breadcrumbs" :key="breadcrumb.id">
               <div class="flex items-center">
                 <nuxt-link :to="breadcrumb.to"
                   class="mr-4 text-sm font-medium text-gray-900"
@@ -179,11 +117,11 @@ const product = reactive({
               </div>
             </li>
             <li class="text-sm">
-              <nuxt-link :to="product.to"
+              <nuxt-link to="#"
                 aria-current="page"
                 class="font-medium text-gray-500 hover:text-gray-600"
               >
-                {{ product0.name }}
+                {{ product.name }}
               </nuxt-link>
             </li>
           </ol>
@@ -193,12 +131,12 @@ const product = reactive({
             <div class="lg:col-start-8 lg:col-span-5">
               <div class="mt-4">
                 <h1 class="text-3xl text-gray-900 font-extrabold tracking-tight">
-                  {{ product0.name }}
+                  {{ product.name }}
                 </h1>
               </div>
               <div class="mt-2">
                 <p class="text-2xl font-bold text-gray-900">
-                  ${{ product0.price }}
+                  ${{ product.price }}
                 </p>
               </div>
               <!-- Reviews -->
@@ -206,7 +144,7 @@ const product = reactive({
                 <h2 class="sr-only">Reviews</h2>
                 <div class="flex items-center">
                   <p class="text-base text-gray-700">
-                    {{ product0.rating }}
+                    {{ product.rating }}
                     <span class="sr-only"> out of 5 stars</span>
                   </p>
                   <div class="ml-1 flex items-center">
@@ -270,7 +208,7 @@ const product = reactive({
                     <nuxt-link to="#"
                       class="text-base font-medium text-indigo-600 hover:text-indigo-500"
                     >
-                    {{ product0.reviews }} reviews
+                    {{ product.reviews }} reviews
                   </nuxt-link>
                   </div>
                 </div>
@@ -281,7 +219,7 @@ const product = reactive({
               <h2 class="sr-only">Images</h2>
               <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
                 <nuxt-img
-                  v-for="image in img"
+                  v-for="image in images"
                   :key="image.id"
                   :src="image.src"
                   :alt="image.alt"
@@ -344,7 +282,7 @@ const product = reactive({
                         :key="size"
                         class="border rounded-md py-3 px-1 flex items-center justify-center text-sm font-medium uppercase sm:flex-1 cursor-pointer focus:outline-none"
                         :class="[
-                          size.inStock ? 'cursor-pointer' : 'opacity-25 cursor-not-allowed',
+                          size.quantity > 0 ? 'cursor-pointer' : 'opacity-25 cursor-not-allowed',
                         ]"
                       >
                         <input
@@ -377,7 +315,7 @@ const product = reactive({
                 <h2 class="text-sm font-medium text-gray-900">Description</h2>
                 <div
                   class="mt-4 prose prose-sm text-gray-500"
-                  v-html="product0.description"
+                  v-html="product.description"
                 />
               </div>
               <div class="mt-8 border-t border-gray-200 pt-8">
@@ -386,7 +324,7 @@ const product = reactive({
                 </h2>
                 <div class="mt-4 prose prose-sm text-gray-500">
                   <ul role="list">
-                    <li v-for="item in product.details" :key="item">
+                    <li v-for="item in details" :key="item">
                       {{ item }}
                     </li>
                   </ul>
